@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { LMS_DATA } from '../data/lmsData';
 
 const LMSContext = createContext();
-const STORAGE_KEY = 'oop_lms_v3_role_state';
+const STORAGE_KEY = 'oop_lms_v4_role_state';
 
 export const LMSProvider = ({ children }) => {
   const [userRole, setUserRole] = useState('public'); // 'public', 'student', 'admin'
@@ -11,13 +11,15 @@ export const LMSProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAnnouncementPopup, setShowAnnouncementPopup] = useState(true);
 
-  // Dynamic state arrays
+  // Dynamic state arrays with bulletproof fallbacks
   const [students, setStudents] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.students && Array.isArray(parsed.students)) return parsed.students;
+        if (parsed.students && Array.isArray(parsed.students) && parsed.students.length > 0) {
+          return parsed.students;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -43,7 +45,7 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.quizScores) return parsed.quizScores;
+        if (parsed.quizScores && typeof parsed.quizScores === 'object') return parsed.quizScores;
       }
     } catch (e) {
       console.error(e);
@@ -56,7 +58,9 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.announcements && Array.isArray(parsed.announcements)) return parsed.announcements;
+        if (parsed.announcements && Array.isArray(parsed.announcements) && parsed.announcements.length > 0) {
+          return parsed.announcements;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -69,7 +73,9 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.assignments && Array.isArray(parsed.assignments)) return parsed.assignments;
+        if (parsed.assignments && Array.isArray(parsed.assignments) && parsed.assignments.length > 0) {
+          return parsed.assignments;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -82,7 +88,7 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.submissions) return parsed.submissions;
+        if (parsed.submissions && typeof parsed.submissions === 'object') return parsed.submissions;
       }
     } catch (e) {
       console.error(e);
@@ -153,7 +159,7 @@ export const LMSProvider = ({ children }) => {
         const status = attendanceMap[student.id] || 'Present';
         const updatedAttendance = [
           { date, topic, status },
-          ...student.attendance.filter((a) => a.date !== date)
+          ...(student.attendance || []).filter((a) => a.date !== date)
         ];
         return { ...student, attendance: updatedAttendance };
       })
@@ -182,7 +188,7 @@ export const LMSProvider = ({ children }) => {
           return {
             ...student,
             marks: {
-              ...student.marks,
+              ...(student.marks || {}),
               ...updatedMarks,
               totalMarks: total,
               grade,
@@ -237,7 +243,8 @@ export const LMSProvider = ({ children }) => {
     }));
   };
 
-  const currentStudent = students.find((s) => s.id === activeStudentId) || students[0];
+  const safeStudents = Array.isArray(students) && students.length > 0 ? students : LMS_DATA.students;
+  const currentStudent = safeStudents.find((s) => s.id === activeStudentId) || safeStudents[0];
 
   return (
     <LMSContext.Provider
@@ -251,13 +258,13 @@ export const LMSProvider = ({ children }) => {
         toggleWeekComplete,
         quizScores,
         saveQuizScore,
-        students,
+        students: safeStudents,
         activeStudentId,
         setActiveStudentId,
         currentStudent,
-        announcements,
-        assignments,
-        submissions,
+        announcements: Array.isArray(announcements) && announcements.length > 0 ? announcements : LMS_DATA.announcements,
+        assignments: Array.isArray(assignments) && assignments.length > 0 ? assignments : LMS_DATA.assignments,
+        submissions: submissions && typeof submissions === 'object' ? submissions : {},
         searchQuery,
         setSearchQuery,
         showAnnouncementPopup,

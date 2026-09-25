@@ -5,10 +5,13 @@ import { ChevronDown, Download, CheckSquare, Square } from 'lucide-react';
 
 export const Curriculum = () => {
   const { data, department, completedWeeks, toggleWeekComplete } = useLMS();
-  const [expandedWeeks, setExpandedWeeks] = useState({ 1: true }); // Week 1 expanded by default
+  const [expandedWeeks, setExpandedWeeks] = useState({ 1: true });
 
-  const filteredWeeks = data.weeks.filter(
-    (w) => department === 'all' || w.department === 'all' || w.department === department
+  const safeWeeks = data && Array.isArray(data.weeks) ? data.weeks : [];
+  const safeCompletedWeeks = Array.isArray(completedWeeks) ? completedWeeks : [];
+
+  const filteredWeeks = safeWeeks.filter(
+    (w) => !department || department === 'all' || w.department === 'all' || w.department === department
   );
 
   const toggleExpand = (id) => {
@@ -16,35 +19,35 @@ export const Curriculum = () => {
   };
 
   return (
-    <section class="section" id="weeks">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">📚 16-Week Course Curriculum</h2>
-          <p class="section-subtitle">
+    <section className="section" id="weeks">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="section-title">📚 16-Week Course Curriculum</h2>
+          <p className="section-subtitle">
             Comprehensive OOP Java syllabus designed for AI & SWE students
           </p>
         </div>
 
-        <div class="weeks-container">
+        <div className="weeks-container">
           {filteredWeeks.map((week) => {
             const isExpanded = !!expandedWeeks[week.id];
-            const isCompleted = completedWeeks.includes(week.id);
+            const isCompleted = safeCompletedWeeks.includes(week.id);
 
             return (
-              <div key={week.id} id={`week-${week.id}`} class="glass-card week-item">
-                <div class="week-header" onClick={() => toggleExpand(week.id)}>
-                  <div class="week-header-left">
-                    <span class="week-number-badge">Week {week.weekNum}</span>
-                    <h3 class="week-title">{week.title}</h3>
+              <div key={week.id} id={`week-${week.id}`} className="glass-card week-item">
+                <div className="week-header" onClick={() => toggleExpand(week.id)}>
+                  <div className="week-header-left">
+                    <span className="week-number-badge">Week {week.weekNum}</span>
+                    <h3 className="week-title">{week.title}</h3>
                   </div>
 
-                  <div class="week-header-right">
+                  <div className="week-header-right">
                     <button
                       type="button"
                       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        toggleWeekComplete(week.id);
+                        if (toggleWeekComplete) toggleWeekComplete(week.id);
                       }}
                       title={isCompleted ? 'Mark as incomplete' : 'Mark as completed'}
                     >
@@ -57,37 +60,37 @@ export const Curriculum = () => {
 
                     <ChevronDown
                       size={20}
-                      class={`chevron-icon ${isExpanded ? 'expanded' : ''}`}
+                      className={`chevron-icon ${isExpanded ? 'expanded' : ''}`}
                     />
                   </div>
                 </div>
 
                 {isExpanded && (
-                  <div class="week-content">
-                    <h4 class="week-section-title">🎯 Learning Objectives</h4>
-                    <ul class="objectives-list">
-                      {week.objectives.map((obj, idx) => (
+                  <div className="week-content">
+                    <h4 className="week-section-title">🎯 Learning Objectives</h4>
+                    <ul className="objectives-list">
+                      {week.objectives && week.objectives.map((obj, idx) => (
                         <li key={idx}>{obj}</li>
                       ))}
                     </ul>
 
-                    <h4 class="week-section-title">📖 Core Topics Covered</h4>
-                    <ul class="topics-list">
-                      {week.topics.map((topic, idx) => (
+                    <h4 className="week-section-title">📖 Core Topics Covered</h4>
+                    <ul className="topics-list">
+                      {week.topics && week.topics.map((topic, idx) => (
                         <li key={idx}>{topic}</li>
                       ))}
                     </ul>
 
                     {week.resources && week.resources.length > 0 && (
                       <>
-                        <h4 class="week-section-title">📥 Lecture Slides & Notes</h4>
+                        <h4 className="week-section-title">📥 Lecture Slides & Notes</h4>
                         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
                           {week.resources.map((res, idx) => (
                             <a
                               key={idx}
                               href={res.path}
                               download
-                              class="download-btn"
+                              className="download-btn"
                               style={{ margin: 0, padding: '0.4rem 0.85rem', fontSize: '0.85rem' }}
                             >
                               <Download size={14} />
@@ -100,7 +103,7 @@ export const Curriculum = () => {
 
                     {week.codeExamples && week.codeExamples.length > 0 && (
                       <>
-                        <h4 class="week-section-title">💻 Code Examples</h4>
+                        <h4 className="week-section-title">💻 Code Examples</h4>
                         {week.codeExamples.map((ex, idx) => (
                           <CodeBlock
                             key={idx}

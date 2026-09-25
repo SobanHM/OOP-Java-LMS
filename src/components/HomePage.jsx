@@ -2,7 +2,7 @@ import React from 'react';
 import { useLMS } from '../context/LMSContext';
 import { Curriculum } from './Curriculum';
 import { SearchBar } from './SearchBar';
-import { UserCheck, Calendar, BookOpen, ShieldCheck, User, Sparkles, Award } from 'lucide-react';
+import { UserCheck, Calendar, ShieldCheck, User } from 'lucide-react';
 
 export const HomePage = () => {
   const { data, setUserRole } = useLMS();
@@ -10,8 +10,8 @@ export const HomePage = () => {
   return (
     <div style={{ paddingTop: '100px' }}>
       {/* Hero Header with Instructor Portrait */}
-      <section class="lms-hero" style={{ paddingTop: '20px' }}>
-        <div class="hero-content container">
+      <section className="lms-hero" style={{ paddingTop: '20px' }}>
+        <div className="hero-content container">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2.5rem', flexWrap: 'wrap', textAlign: 'left', marginBottom: '3rem' }}>
             {/* Instructor Photo Card */}
             <div style={{ position: 'relative' }}>
@@ -29,23 +29,23 @@ export const HomePage = () => {
 
             {/* Course Title & Instructor Meta */}
             <div style={{ maxWidth: '640px' }}>
-              <span class="badge" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#67e8f9', padding: '0.4rem 0.85rem', marginBottom: '0.75rem', fontSize: '0.85rem' }}>
+              <span className="badge" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#67e8f9', padding: '0.4rem 0.85rem', marginBottom: '0.75rem', fontSize: '0.85rem' }}>
                 🎓 {data.courseInfo.university}
               </span>
-              <h1 class="hero-title" style={{ fontSize: '2.75rem', margin: '0.5rem 0' }}>
-                Object-Oriented Programming <span class="text-gradient">(Java)</span>
+              <h1 className="hero-title" style={{ fontSize: '2.75rem', margin: '0.5rem 0' }}>
+                Object-Oriented Programming <span className="text-gradient">(Java)</span>
               </h1>
-              <p class="hero-subtitle" style={{ margin: '0 0 1.25rem 0' }}>
+              <p className="hero-subtitle" style={{ margin: '0 0 1.25rem 0' }}>
                 Official course portal for Software Engineering (SWE) and Artificial Intelligence (AI) programs.
               </p>
 
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
-                <div class="hero-badge-pill">
-                  <UserCheck size={16} class="text-gradient" />
+                <div className="hero-badge-pill">
+                  <UserCheck size={16} className="text-gradient" />
                   <span>Instructor: {data.courseInfo.instructor} ({data.courseInfo.email})</span>
                 </div>
-                <div class="hero-badge-pill">
-                  <Calendar size={16} class="text-gradient" />
+                <div className="hero-badge-pill">
+                  <Calendar size={16} className="text-gradient" />
                   <span>{data.courseInfo.semester} — CS-201</span>
                 </div>
               </div>
@@ -53,7 +53,7 @@ export const HomePage = () => {
               {/* Action Portal Switcher Buttons */}
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <button
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   style={{ padding: '0.85rem 1.75rem', fontSize: '1rem' }}
                   onClick={() => setUserRole('student')}
                 >
@@ -61,7 +61,7 @@ export const HomePage = () => {
                 </button>
 
                 <button
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   style={{ padding: '0.85rem 1.75rem', fontSize: '1rem' }}
                   onClick={() => setUserRole('admin')}
                 >
