@@ -8,7 +8,7 @@ export const Footer = () => {
           <h3>The University of Larkano</h3>
           <p>Department of Computer Science & Software Engineering</p>
           <p>Instructor: Soban Hussain</p>
-          <p>Email: soban.hussain@larkano.edu.pk</p>
+          <p>Email: soban@uolrk.edu.pk</p>
         </div>
 
         <div class="footer-column">

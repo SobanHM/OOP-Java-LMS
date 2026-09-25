@@ -4,6 +4,7 @@ export const LMS_DATA = {
     code: 'CS-201',
     language: 'Java',
     instructor: 'Soban Hussain',
+    email: 'soban@uolrk.edu.pk',
     university: 'The University of Larkano',
     semester: 'Fall 2026',
     departments: [
