@@ -6,6 +6,7 @@ const STORAGE_KEY = 'oop_lms_v3_role_state';
 
 export const LMSProvider = ({ children }) => {
   const [userRole, setUserRole] = useState('public'); // 'public', 'student', 'admin'
+  const [department, setDepartment] = useState('all'); // 'all', 'ai', 'swe'
   const [activeStudentId, setActiveStudentId] = useState('2026-CS-042');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAnnouncementPopup, setShowAnnouncementPopup] = useState(true);
@@ -16,7 +17,7 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.students || LMS_DATA.students;
+        if (parsed.students && Array.isArray(parsed.students)) return parsed.students;
       }
     } catch (e) {
       console.error(e);
@@ -24,12 +25,38 @@ export const LMSProvider = ({ children }) => {
     return LMS_DATA.students;
   });
 
+  const [completedWeeks, setCompletedWeeks] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.completedWeeks && Array.isArray(parsed.completedWeeks)) return parsed.completedWeeks;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return [1];
+  });
+
+  const [quizScores, setQuizScores] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.quizScores) return parsed.quizScores;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return { 1: 100, 2: 90 };
+  });
+
   const [announcements, setAnnouncements] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.announcements || LMS_DATA.announcements;
+        if (parsed.announcements && Array.isArray(parsed.announcements)) return parsed.announcements;
       }
     } catch (e) {
       console.error(e);
@@ -42,7 +69,7 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.assignments || LMS_DATA.assignments;
+        if (parsed.assignments && Array.isArray(parsed.assignments)) return parsed.assignments;
       }
     } catch (e) {
       console.error(e);
@@ -55,11 +82,7 @@ export const LMSProvider = ({ children }) => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.submissions || {
-          '2026-CS-042': {
-            1: { date: '2026-09-25', fileName: 'Calculator.java', code: 'public class Solution {}', notes: 'Completed with 0 errors', status: 'Graded', grade: '98/100' }
-          }
-        };
+        if (parsed.submissions) return parsed.submissions;
       }
     } catch (e) {
       console.error(e);
@@ -78,6 +101,8 @@ export const LMSProvider = ({ children }) => {
         STORAGE_KEY,
         JSON.stringify({
           students,
+          completedWeeks,
+          quizScores,
           announcements,
           assignments,
           submissions
@@ -86,7 +111,17 @@ export const LMSProvider = ({ children }) => {
     } catch (e) {
       console.error('Error saving state:', e);
     }
-  }, [students, announcements, assignments, submissions]);
+  }, [students, completedWeeks, quizScores, announcements, assignments, submissions]);
+
+  const toggleWeekComplete = (weekId) => {
+    setCompletedWeeks((prev) =>
+      prev.includes(weekId) ? prev.filter((id) => id !== weekId) : [...prev, weekId]
+    );
+  };
+
+  const saveQuizScore = (quizId, scorePercentage) => {
+    setQuizScores((prev) => ({ ...prev, [quizId]: Math.round(scorePercentage) }));
+  };
 
   // Admin Actions
   const enrollStudentAdmin = (newStudent) => {
@@ -210,6 +245,12 @@ export const LMSProvider = ({ children }) => {
         data: LMS_DATA,
         userRole,
         setUserRole,
+        department,
+        setDepartment,
+        completedWeeks,
+        toggleWeekComplete,
+        quizScores,
+        saveQuizScore,
         students,
         activeStudentId,
         setActiveStudentId,
