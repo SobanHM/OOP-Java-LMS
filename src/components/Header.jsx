@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLMS } from '../context/LMSContext';
-import { GraduationCap, Menu, X, BookOpen } from 'lucide-react';
+import { GraduationCap, Menu, X } from 'lucide-react';
 
 export const Header = () => {
   const { activeSection, setActiveSection } = useLMS();
@@ -9,10 +9,11 @@ export const Header = () => {
   const navLinks = [
     { id: 'home', label: 'Home' },
     { id: 'weeks', label: 'Weeks' },
-    { id: 'resources', label: 'Resources' },
+    { id: 'resources', label: 'Resources & Lab' },
     { id: 'assignments', label: 'Assignments' },
-    { id: 'announcements', label: 'Announcements' },
+    { id: 'gradebook-section', label: 'Gradebook' },
     { id: 'quizzes', label: 'Quizzes' },
+    { id: 'announcements', label: 'Announcements' },
     { id: 'progress-section', label: 'Progress' }
   ];
 

@@ -16,6 +16,33 @@ export const LMS_DATA = {
     totalWeeks: 16,
     textbook: 'Absolute Java by Walter Savitch (Global Edition, Pearson)'
   },
+  studentProfile: {
+    name: 'Soban Hussain (Student Portal View)',
+    rollNo: '2026-CS-042',
+    department: 'Software Engineering',
+    semester: '2nd Semester',
+    enrollmentStatus: 'Enrolled',
+    enrolledDate: '2026-09-15',
+    attendanceRate: 94
+  },
+  attendanceRecords: [
+    { date: '2026-09-15', topic: 'Course Intro & Java Environment', status: 'Present' },
+    { date: '2026-09-17', topic: 'JDK vs JRE vs JVM Architecture', status: 'Present' },
+    { date: '2026-09-19', topic: 'Primitive Types & Scanner Class', status: 'Present' },
+    { date: '2026-09-22', topic: 'Control Flow & Conditionals', status: 'Present' },
+    { date: '2026-09-24', topic: 'Loops & Pattern Generation', status: 'Absent' },
+    { date: '2026-09-26', topic: '1D & 2D Array Traversal', status: 'Present' },
+    { date: '2026-09-29', topic: 'String Methods & Immutability', status: 'Present' },
+    { date: '2026-10-01', topic: 'Method Overloading Principles', status: 'Present' }
+  ],
+  examMarks: {
+    midterm: { score: 88, maxScore: 100, weight: '30%', grade: 'A-' },
+    labExam: { score: 92, maxScore: 100, weight: '20%', grade: 'A' },
+    assignmentsAvg: { score: 95, maxScore: 100, weight: '20%', grade: 'A+' },
+    quizzesAvg: { score: 90, maxScore: 100, weight: '10%', grade: 'A' },
+    finalProject: { score: 94, maxScore: 100, weight: '20%', grade: 'A' },
+    overallGpa: '3.85 / 4.0'
+  },
   weeks: [
     {
       id: 1,
@@ -763,7 +790,8 @@ class Book extends Item {
     { id: 7, name: 'Weeks 1-2 Fundamentals Notes', path: 'Notes/oop_weeks_1_2_fundamental_Understanding.pdf', type: 'pdf', category: 'note', size: '240 KB', icon: '📝' },
     { id: 8, name: 'Arrays, Strings & Methods Guide', path: 'Notes/java_arrays_strings_methods_guide.pdf', type: 'pdf', category: 'note', size: '195 KB', icon: '📝' },
     { id: 9, name: 'Official Course Outline (SWE & AI)', path: 'Outline/OOP-Outline_(SWE and AI - 2nd Sem)-Official.pdf', type: 'pdf', category: 'outline', size: '268 KB', icon: '📋' },
-    { id: 10, name: 'Course Outline (Designed by Instructor)', path: 'Outline/Outline_OOP-Designed_by_SobanHussain.docx', type: 'docx', category: 'outline', size: '44 KB', icon: '📋' }
+    { id: 10, name: 'Course Outline (Designed by Instructor)', path: 'Outline/Outline_OOP-Designed_by_SobanHussain.docx', type: 'docx', category: 'outline', size: '44 KB', icon: '📋' },
+    { id: 11, name: 'OOP Java Official Lab Manual & Exercises', path: 'Notes/java_arrays_strings_methods_guide.pdf', type: 'pdf', category: 'lab', size: '310 KB', icon: '🧪' }
   ],
   announcements: [
     {

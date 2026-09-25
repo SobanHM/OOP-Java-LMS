@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { useLMS } from '../context/LMSContext';
-import { Download, FileText, Book, Presentation, ClipboardList } from 'lucide-react';
+import { Download, FileText, Book, Presentation, ClipboardList, FlaskConical } from 'lucide-react';
 
 export const ResourceCenter = () => {
   const { data } = useLMS();
-  const [filter, setFilter] = useState('all'); // 'all', 'book', 'lecture', 'note', 'outline'
+  const [filter, setFilter] = useState('all');
 
   const categories = [
     { id: 'all', label: 'All Materials' },
     { id: 'book', label: '📚 Textbooks' },
-    { id: 'lecture', label: '📊 Lecture Slides' },
-    { id: 'note', label: '📝 Lecture Notes' },
-    { id: 'outline', label: '📋 Outlines' }
+    { id: 'lecture', label: '📊 Lecture Slides (PPT)' },
+    { id: 'note', label: '📝 Lecture Notes (PDF)' },
+    { id: 'outline', label: '📋 Outlines' },
+    { id: 'lab', label: '🧪 Lab Manuals & Practicals' }
   ];
 
   const filteredResources =
@@ -32,9 +33,9 @@ export const ResourceCenter = () => {
     <section class="section" id="resources">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">📥 Resource Center</h2>
+          <h2 class="section-title">📥 Resource Center & Lab Manuals</h2>
           <p class="section-subtitle">
-            Download slides, notes, course outlines, and textbook materials directly
+            Download PPT slides, PDF guides, textbook chapters, outlines, and practical lab manuals
           </p>
         </div>
 
